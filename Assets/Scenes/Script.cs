@@ -29,29 +29,32 @@ public class Script : MonoBehaviour
     }
 
     private GameObject getResource(int x, int y) {
-        GameObject obj = new GameObject("Niemand");
+        GameObject obj = new GameObject("Sprite (" + x + ", " + y + ")");
         SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
 
         
 
         if (x == 0 && y == 0) {
-            renderer.sprite = Resources.Load<Sprite>("Sprites/Lake");
-            renderer.color = Color.red;
+           renderer.sprite = Resources.Load<Sprite>("Sprites/FireStationYellow");
         } else if (x == 0 && y == size - 1) {
-            renderer.sprite = Resources.Load<Sprite>("Sprites/Lake");
-            renderer.color = Color.green;
+            renderer.sprite = Resources.Load<Sprite>("Sprites/FireStationRed");
         } else if (x == size - 1 && y == 0) {
-            renderer.sprite = Resources.Load<Sprite>("Sprites/Lake");
-            renderer.color = Color.white;
+            renderer.sprite = Resources.Load<Sprite>("Sprites/FireStationBlue");
         } else if (x == size - 1 && y == size - 1) {
-            renderer.sprite = Resources.Load<Sprite>("Sprites/Lake");
-            renderer.color = Color.gray;
+            renderer.sprite = Resources.Load<Sprite>("Sprites/FireStationGreen");
         } else {
             if (ran.NextDouble() < 0.1) {
                 renderer.sprite = Resources.Load<Sprite>("Sprites/Lake");
             } else {
-                renderer.sprite = Resources.Load<Sprite>("Sprites/Lake");
-                renderer.color = Color.blue;
+                double num = ran.NextDouble();
+                if (num < 0.05) {
+                    renderer.sprite = Resources.Load<Sprite>("Sprites/Heaviely_Burning");
+                } else if(num < 0.2) {
+                    renderer.sprite = Resources.Load<Sprite>("Sprites/Slightly_Burning");
+                } else {
+                    renderer.sprite = Resources.Load<Sprite>("Sprites/Forrest");
+                }
+                
             }
         }
 
