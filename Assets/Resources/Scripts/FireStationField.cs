@@ -1,4 +1,6 @@
-﻿namespace Resources.Scripts
+﻿using UnityEngine;
+
+namespace Resources.Scripts
 {
     public class FireStationField : GameField
     {
@@ -14,6 +16,14 @@
         {
             return _player;
         }
-        
+
+        public override void Render()
+        {
+        }
+
+        public override void RenderSprite(SpriteRenderer renderer)
+        {
+            renderer.sprite = _player.GetSprite();
+        }
     }
 }

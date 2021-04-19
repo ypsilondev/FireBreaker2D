@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
 namespace Resources.Scripts
@@ -8,7 +9,7 @@ namespace Resources.Scripts
     public class GameGrid
     {
         private readonly GameField[,] _board;
-        private readonly uint2 _size;
+        public readonly uint2 _size;
         
         public GameGrid(uint2 size)
         {
@@ -25,18 +26,32 @@ namespace Resources.Scripts
             _board[_size.x - 1, 0] = new FireStationField(Player.Blue);
             _board[_size.x - 1, _size.y - 1] = new FireStationField(Player.Yellow);
 
+            new FireEngine(this, Player.Red).GetGameObject();
+
             FillBoard(random, _size);
         }
 
-        public void Render()
+        public void CreateObjects()
         {
             for (int x = 0; x < _size.x; x++)
             {
                 for (int y = 0; y < _size.y; y++)
                 {
-                    
+                    _board[x, y].SetGameObject(GetObject(x, y));
                 }
             }
+        }
+
+        private GameObject GetObject(int x, int y)
+        {
+            GameObject obj = new GameObject("Sprite (" + x + ", " + y + ")");
+            SpriteRenderer component = obj.AddComponent<SpriteRenderer>();
+            _board[x, y].RenderSprite(component);
+
+            Vector2 pos = new Vector2(x-(_size.x/2), y-(_size.y/2));
+            obj.transform.position = pos;
+
+            return obj;
         }
         
         private static void Shuffle<T>(IList<T> list, Random random)
@@ -55,7 +70,7 @@ namespace Resources.Scripts
 
         private List<GameField> GenerateFieldItems(Random random, uint2 size)
         {
-            int pondsAmount = (int) Math.Sqrt(_board.GetLength(0) * _board.GetLength(1));
+            int pondsAmount = (int) Math.Sqrt(_board.GetLength(0) * _board.GetLength(1)) / 2;
             int heavilyBurning = pondsAmount;
             int slightlyBurning = pondsAmount * 2;
             
@@ -63,7 +78,7 @@ namespace Resources.Scripts
             
             for (uint i = 0; i < pondsAmount; i++)
             {
-                fields.Add(new GameField(FieldType.Pond));
+                fields.Add(new PondField());
             }
             for (uint i = 0; i < heavilyBurning; i++)
             {
@@ -101,5 +116,12 @@ namespace Resources.Scripts
             }
         }
 
+        public void Update()
+        {
+            foreach (GameField field in _board)
+            {
+                field.Render();
+            }
+        }
     }
 }

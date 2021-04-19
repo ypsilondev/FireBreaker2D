@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using UnityEngine;
+using Color = System.Drawing.Color;
 
 namespace Resources.Scripts
 {
@@ -6,10 +7,12 @@ namespace Resources.Scripts
     {
         
         private readonly Color _color;
+        private readonly Sprite _sprite;
         
-        public Player(Color color)
+        public Player(Color color, Sprite sprite)
         {
             _color = color;
+            _sprite = sprite;
         }
 
         public Color GetColor()
@@ -17,13 +20,18 @@ namespace Resources.Scripts
             return _color;
         }
 
-        public static Player Red = new Player(Color.Red);
+        public Sprite GetSprite()
+        {
+            return _sprite;
+        }
 
-        public static Player Green = new Player(Color.Green);
+        public static Player Red = new Player(Color.Red, UnityEngine.Resources.Load<Sprite>("Sprites/FireStationRed"));
 
-        public static Player Yellow = new Player(Color.Yellow);
+        public static Player Green = new Player(Color.Green, UnityEngine.Resources.Load<Sprite>("Sprites/FireStationGreen"));
 
-        public static Player Blue = new Player(Color.Blue);
+        public static Player Yellow = new Player(Color.Yellow, UnityEngine.Resources.Load<Sprite>("Sprites/FireStationYellow"));
+
+        public static Player Blue = new Player(Color.Blue, UnityEngine.Resources.Load<Sprite>("Sprites/FireStationBlue"));
     }
     
 }
